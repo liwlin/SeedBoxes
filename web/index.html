@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';">
+  <title>Boxes.py 客户端</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app" class="layout">
+    <aside class="sidebar">
+      <header class="brand">
+        <img class="brand-logo" src="seedboxes-logo.svg" alt="SeedBoxes" />
+        <div class="brand-text">
+          <div class="brand-title">SeedBoxes</div>
+          <div class="brand-sub">激光切割盒子生成器</div>
+        </div>
+      </header>
+      <div class="search-wrap">
+        <input id="search" type="text" placeholder="搜索生成器…" />
+      </div>
+      <nav id="group-list" class="group-list">
+        <div class="loading">加载中…</div>
+      </nav>
+      <footer class="sidebar-footer">
+        <span id="status" class="status">准备就绪</span>
+        <span class="brand-by">by makerseed</span>
+      </footer>
+    </aside>
+
+    <main class="content">
+      <!-- 欢迎页：分组画廊 -->
+      <section id="welcome" class="welcome">
+        <div class="welcome-head">
+          <h1>选择一个生成器开始</h1>
+          <p>从下面的分组中挑选，或在左侧搜索框中按名称过滤。</p>
+        </div>
+        <div id="group-gallery" class="group-gallery"></div>
+        <p class="welcome-credit">
+          SeedBoxes · 基于开源项目
+          <a href="https://github.com/florianfesti/boxes" target="_blank" rel="noopener">Boxes.py</a>
+          (GPL-3.0) 二次开发 · © <img class="credit-mark" src="makerseed-logo.svg" alt="" />
+          makerseed 种子创客工坊
+        </p>
+      </section>
+
+      <!-- 分组浏览页：该分组下所有生成器卡片 -->
+      <section id="browse" class="browse hidden">
+        <header class="browse-head">
+          <div class="browse-head-inner">
+            <nav class="breadcrumb">
+              <button id="browse-back" class="bc-pill" title="返回主页">
+                <span class="bc-arrow">←</span>
+                <span>主页</span>
+              </button>
+              <span class="bc-sep">›</span>
+              <span class="bc-current" id="browse-title">—</span>
+            </nav>
+            <div class="browse-meta">
+              <h2 id="browse-title-big">—</h2>
+              <p id="browse-desc"></p>
+            </div>
+          </div>
+        </header>
+        <div id="browse-grid" class="browse-grid"></div>
+      </section>
+
+      <!-- 编辑器 -->
+      <section id="editor" class="editor hidden">
+        <header class="editor-header">
+          <div class="editor-title">
+            <nav class="breadcrumb editor-bc">
+              <button id="editor-back-home" class="bc-pill bc-mini" title="返回主页">
+                <span class="bc-arrow">←</span><span>主页</span>
+              </button>
+              <span class="bc-sep">›</span>
+              <button id="editor-back-group" class="bc-pill bc-mini" title="返回分组">
+                <span class="bc-arrow">←</span><span id="editor-bc-group">分组</span>
+              </button>
+            </nav>
+            <div class="editor-title-text">
+              <h2 id="gen-name">—</h2>
+              <p id="gen-desc"></p>
+            </div>
+          </div>
+          <div class="editor-actions">
+            <select id="format-select" title="输出格式"></select>
+            <button id="btn-preview" class="primary">预览</button>
+            <button id="btn-save">保存到文件…</button>
+          </div>
+        </header>
+
+        <div class="editor-body">
+          <div id="form-pane" class="form-pane">
+            <div id="sample-card" class="sample-card hidden">
+              <img id="sample-img" alt="作品参考图" />
+              <div class="sample-caption">作品参考图</div>
+            </div>
+            <form id="param-form" autocomplete="off"></form>
+          </div>
+          <div id="preview-pane" class="preview-pane">
+            <div id="preview-toolbar" class="preview-toolbar">
+              <span id="preview-info">未渲染</span>
+              <span class="spacer"></span>
+              <button id="btn-zoom-in" title="放大">+</button>
+              <button id="btn-zoom-out" title="缩小">-</button>
+              <button id="btn-zoom-reset" title="适合窗口">⤢</button>
+            </div>
+            <div id="preview-host" class="preview-host">
+              <div class="preview-empty">点击「预览」即可渲染当前参数</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>

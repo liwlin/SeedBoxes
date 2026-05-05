@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+
+# 虚拟环境
+.venv/
+venv/
+.uv/
+
+# 构建产物
+build/
+dist/
+*.spec.bak
+*.manifest
+uv.lock.bak
+
+# Cython 中间产物
+backend.c
+backend.html
+*.pyd
+backend.py.src
+
+# PyInstaller 工作目录
+*.toc
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# 日志 / 外部工具状态
+*.log
+.omx/
+
+# 临时
+tmp/
+*.tmp
+full_logo.png
+web/seedboxes-logo-256.png
+_test_cython.bat

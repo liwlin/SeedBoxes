@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">SeedBoxes Logo</title>
+  <desc id="desc">Vector logo for SeedBoxes: a blue geometric open box with an orange laser cutting burst and wordmark.</desc>
+  <defs>
+    <linearGradient id="blueTopLeft" x1="340" y1="250" x2="570" y2="450" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#18A8FF"/>
+      <stop offset="1" stop-color="#0877C9"/>
+    </linearGradient>
+    <linearGradient id="blueTopRight" x1="640" y1="250" x2="850" y2="450" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0B4E94"/>
+      <stop offset="1" stop-color="#063665"/>
+    </linearGradient>
+    <linearGradient id="blueLeft" x1="300" y1="410" x2="570" y2="790" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0879CC"/>
+      <stop offset="1" stop-color="#075399"/>
+    </linearGradient>
+    <linearGradient id="blueRight" x1="650" y1="410" x2="925" y2="790" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5EC5FF"/>
+      <stop offset="1" stop-color="#1689DC"/>
+    </linearGradient>
+    <linearGradient id="blueBottomLeft" x1="470" y1="635" x2="590" y2="845" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#086BB9"/>
+      <stop offset="1" stop-color="#084782"/>
+    </linearGradient>
+    <linearGradient id="blueBottomRight" x1="610" y1="635" x2="755" y2="845" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4EBFFF"/>
+      <stop offset="1" stop-color="#157ED3"/>
+    </linearGradient>
+    <linearGradient id="laser" x1="600" y1="310" x2="600" y2="720" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF3D0B"/>
+      <stop offset="1" stop-color="#FF7A00"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#0B2A3A" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .panel{stroke:#F9F5EC;stroke-width:24;stroke-linejoin:round;stroke-linecap:round;}
+      .laser{stroke:url(#laser);stroke-width:28;stroke-linecap:round;stroke-linejoin:round;fill:none;}
+      .wordmark{font-family:Inter, Avenir Next, Helvetica Neue, Arial, sans-serif;font-size:132px;font-weight:700;letter-spacing:-6px;fill:#123452;}
+    </style>
+  </defs>
+
+  <rect width="1200" height="1200" fill="#FBF6EC"/>
+
+  <g filter="url(#softShadow)">
+    <!-- Open box / folded laser-cut panels -->
+    <path class="panel" fill="url(#blueTopLeft)" d="M585 180 L306 358 Q286 371 300 390 L465 505 Q482 517 499 505 L585 448 Q600 438 600 420 L600 202 Q600 180 585 180 Z"/>
+    <path class="panel" fill="url(#blueTopRight)" d="M615 180 Q600 180 600 202 L600 420 Q600 438 615 448 L701 505 Q718 517 735 505 L900 390 Q914 371 894 358 L615 180 Z"/>
+
+    <path class="panel" fill="url(#blueLeft)" d="M295 418 Q270 418 270 443 L270 664 Q270 702 300 724 L568 902 Q600 924 600 886 L600 752 Q600 731 582 719 L484 654 Q465 641 465 618 L465 520 Q465 503 451 493 L308 426 Q303 418 295 418 Z"/>
+    <path class="panel" fill="url(#blueRight)" d="M905 418 Q930 418 930 443 L930 664 Q930 702 900 724 L632 902 Q600 924 600 886 L600 752 Q600 731 618 719 L716 654 Q735 641 735 618 L735 520 Q735 503 749 493 L892 426 Q897 418 905 418 Z"/>
+
+    <path class="panel" fill="url(#blueBottomLeft)" d="M432 633 Q448 616 466 632 L565 724 Q585 742 585 770 L585 884 Q585 900 570 891 L412 786 Q392 773 392 749 L392 682 Q392 664 405 652 Z"/>
+    <path class="panel" fill="url(#blueBottomRight)" d="M768 633 Q752 616 734 632 L635 724 Q615 742 615 770 L615 884 Q615 900 630 891 L788 786 Q808 773 808 749 L808 682 Q808 664 795 652 Z"/>
+  </g>
+
+  <!-- Laser cutting element -->
+  <g>
+    <path class="laser" d="M600 305 L600 718"/>
+    <path class="laser" d="M505 642 L695 642"/>
+    <path class="laser" d="M538 580 L662 704"/>
+    <path class="laser" d="M662 580 L538 704"/>
+    <path class="laser" d="M600 560 L600 725"/>
+    <circle cx="600" cy="642" r="32" fill="#FF5A0A"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text class="wordmark" x="600" y="1020" text-anchor="middle">SeedBoxes</text>
+</svg>

@@ -1,0 +1,39 @@
+[project]
+name = "seedboxes"
+version = "0.1.0"
+description = "SeedBoxes — 基于 Boxes.py 二次开发的桌面客户端（PyWebView + 中文界面）"
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+requires-python = ">=3.10,<3.11"
+authors = [
+    { name = "makerseed (种子创客工坊)" },
+]
+keywords = ["boxes", "laser-cutter", "pywebview", "desktop", "chinese", "seedboxes"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Win32 (MS Windows)",
+    "Intended Audience :: Manufacturing",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Multimedia :: Graphics :: Editors :: Vector-Based",
+]
+dependencies = [
+    "pywebview>=5.0",
+    "boxes",
+]
+
+[project.optional-dependencies]
+build = [
+    "pyinstaller>=6.0",
+]
+
+# boxes 通过 git 直接拉上游 release-1.2 标签（不污染本仓库 + 锁版本可复现）
+[tool.uv.sources]
+boxes = { git = "https://github.com/florianfesti/boxes", rev = "release-1.2" }
+
+[project.urls]
+Homepage = "https://github.com/makerseed/SeedBoxes"
+Repository = "https://github.com/makerseed/SeedBoxes"
+Upstream = "https://github.com/florianfesti/boxes"
