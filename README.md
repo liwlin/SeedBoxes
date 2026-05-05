@@ -1,11 +1,24 @@
-# SeedBoxes
+<h1 align="center">SeedBoxes</h1>
 
-> 基于开源项目 [Boxes.py](https://github.com/florianfesti/boxes) 二次开发的桌面客户端
-> 中文界面 · 100% 离线 · Windows 单 exe
+<p align="center">
+  基于开源项目 <a href="https://github.com/florianfesti/boxes">Boxes.py</a> 二次开发的桌面客户端<br/>
+  中文界面 · 100% 离线 · Windows 单 exe
+</p>
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-![Python](https://img.shields.io/badge/python-3.10-blue.svg)
-![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg)
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3" /></a>
+  <img src="https://img.shields.io/badge/python-3.10-blue.svg" alt="Python" />
+  <img src="https://img.shields.io/badge/platform-Windows-lightgrey.svg" alt="Platform" />
+  <a href="https://github.com/liwlin/SeedBoxes/releases/tag/v0.1"><img src="https://img.shields.io/badge/release-v0.1-brightgreen.svg" alt="Release" /></a>
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/init.png" alt="SeedBoxes 主界面" width="900" />
+</p>
+
+<p align="center">
+  <em>主界面：左侧分组导航 + 中央分组卡片画廊 + 底部 GPL 致谢</em>
+</p>
 
 ---
 
