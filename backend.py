@@ -286,11 +286,13 @@ def _render_fallback_svg(name: str) -> str | None:
 # --------------------------------------------------------------------- API
 
 class Api:
-    def __init__(self) -> None:
+    def __init__(self, data_dir: Path | None = None) -> None:
         self._window: webview.Window | None = None
         self._render_lock = ENGINE_LOCK
         from seedboxes.engine.geometry_service import GeometryService
         self._geometry_service = GeometryService()
+        from seedboxes.desktop.persistence import DesktopPersistence
+        self._persistence = DesktopPersistence(lambda: self._window, data_dir)
 
     def generate_model(self, payload: dict[str, Any]) -> dict[str, Any]:
         """Experimental structured geometry. Legacy preview/export stay independent."""
@@ -305,6 +307,30 @@ class Api:
             logging.exception("Structured geometry generation failed")
             return {"ok": False, "error": {"code": "GENERATION_FAILED",
                     "messageZh": "结构化几何生成失败，请检查日志。", "retryable": False}}
+
+    def load_project(self):
+        return self._persistence.load_project()
+
+    def save_project(self, payload, save_as=False):
+        return self._persistence.save_project(payload, save_as)
+
+    def save_recovery(self, payload):
+        return self._persistence.save_recovery(payload)
+
+    def list_recovery(self):
+        return self._persistence.list_recovery()
+
+    def load_recovery(self, project_id):
+        return self._persistence.load_recovery(project_id)
+
+    def create_profile(self, kind):
+        return self._persistence.create_profile(kind)
+
+    def save_profile(self, payload):
+        return self._persistence.save_profile(payload)
+
+    def list_profiles(self):
+        return self._persistence.list_profiles()
 
     def set_window(self, window: webview.Window) -> None:
         self._window = window

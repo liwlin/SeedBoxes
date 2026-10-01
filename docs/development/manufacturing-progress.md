@@ -63,3 +63,21 @@ Implementation not yet complete. Windows UI/packaging and physical cutting are n
 - Batch T01–T04 complete as a software foundation. Public capability flags remain conservative: no manufacturing checks, no 3D, no enhanced export. No claim of production readiness or successful physical cutting.
 - Next entry: T05 project/profile persistence, then T06 calibration and T07 scheduling/UI; preserve this geometry baseline during integration.
 - Git delivery: independent feature branch, per-task commits and a separate review-fix commit; do not merge main automatically.
+
+## T05 — project and process-profile persistence
+
+Base: `c8e96bed1ca9dfaea95501ab7edb1ccfd9576ae8` (remote first-batch head).
+
+- Ruling: Continue with T05 as the next reviewable delivery, as proposed in the progress reply; scheduling/editor integration is T06, calibration cards T07. Earlier informal replies reversed T06/T07; the checked-in plan is authoritative. Cost if misunderstood: UI delivery remains a subsequent task, not implied by these backend interfaces.
+- Pre-flight T02 -> T05: retain the original minimal profile snapshot contract so saved baseline projects remain valid; add a strict process-profile contract for editable global profiles, where unknown burn remains null until explicitly supplied.
+- Pre-flight T05 -> T06: expose native load/save, recovery and profile methods now. The 2-second recovery timer and exit lifecycle are owned by the forthcoming editor/scheduler; no claim that the unchanged legacy form autosaves.
+- Ruling: `ProjectStore.load` returns `Project | ReadOnlyProject` for future schemas. A raw read-only envelope preserves unknown fields, while save rejects it and also refuses overwriting an existing future-version file. No earlier supported schema exists, so no guessed migration is installed. Cost: a newer file can be inspected but not edited by this build.
+- Ruling: At least five thickness readings (up to 100) derive min/max and a median representative value; raw readings remain in the immutable version. Median is explicit in data. Cost: an application that prefers a mean must introduce an explicit measurement policy.
+- Ruling: Formal project writes use a process-wide lock, flush/close, same-directory replacement and a raw previous-file .bak. Profile versions publish with an exclusive hard link so competing writers cannot overwrite the same version; unsupported local filesystems return an error. Cost: general shared/network-filesystem collaboration is not promised, and sudden power-loss durability still depends on the filesystem/device.
+- RED: 25 storage/profile cases failed before implementation; six desktop/API and safe-error tests then failed before integration.
+- GREEN: Chinese paths, interrupted flush/backup/replace, future read-only, malformed/duplicate JSON, 20 MiB import/save limit, detached recovery and cleanup identity, immutable profiles, stale-version rejection, five-point records, calibration invalidation, native-picker cancellation and legacy preview coexistence.
+- Formal files and recovery snapshots remain independent. Cleanup compares the saved file and recovery payload hash, preserving newer or externally changed work. Corrupt recovery candidates are listed with errors instead of hiding all candidates.
+- Material presets are names only; no machine, speed, power or burn recommendation is manufactured. Reference profiles can be saved with missing measurements. Calibrated status requires matching evidence, five readings and explicit processing values.
+- Added `seedboxes/desktop/persistence.py` to keep storage handling out of the legacy rendering class; backend remains a thin bridge. Dialog tests substitute only the native picker; filesystem IO stays real.
+- Schema errors now report the field/rule without echoing potentially large user documents. This was reproduced by a failing privacy/size test.
+- Windows native dialogs, packaged executable behavior and power-loss recovery remain untested in this Linux session.

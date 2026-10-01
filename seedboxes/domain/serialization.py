@@ -30,16 +30,25 @@ def ensure_json(value: Any) -> None:
     raise ValueError('项目只能包含 JSON 数据')
 
 
-def to_json(value: Any) -> Any:
+def _plain(value: Any) -> Any:
     if is_dataclass(value):
-        value = asdict(value)
+        return asdict(value)
+    if isinstance(value, (list, tuple)):
+        return [_plain(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _plain(item) for key, item in value.items()}
+    return value
+
+
+def to_json(value: Any) -> Any:
+    value = _plain(value)
     ensure_json(value)
     return json.loads(json.dumps(value, ensure_ascii=False, allow_nan=False))
 
 
 @lru_cache(maxsize=16)
 def schema_validator(name: str) -> Draft202012Validator:
-    if name not in {'project', 'generated-model', 'profile', 'issue', 'response'}:
+    if name not in {'project', 'generated-model', 'profile', 'process-profile', 'issue', 'response'}:
         raise ValueError('未知数据契约')
     root = Path(sys._MEIPASS) if getattr(sys, 'frozen', False) else Path(__file__).resolve().parents[2]
     schema = json.loads((root / 'schemas' / (name + '.schema.json')).read_text(encoding='utf-8'))
@@ -52,7 +61,7 @@ def validate_contract(name: str, data: dict) -> None:
     error = next(schema_validator(name).iter_errors(data), None)
     if error:
         location = '.'.join(map(str, error.absolute_path)) or name
-        raise ValueError(f'数据契约不匹配：{location}: {error.message}')
+        raise ValueError(f'数据契约不匹配：{location}，违反 {error.validator} 规则')
 
 
 def normalize_project(data: dict) -> Project:

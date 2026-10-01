@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seedboxes.local/schemas/process-profile.schema.json",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "profileId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "status": {
+      "enum": [
+        "reference",
+        "calibrated",
+        "retired"
+      ]
+    },
+    "machine": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "model": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "laserType": {
+          "enum": [
+            "unknown",
+            "diode",
+            "co2",
+            "fiber",
+            "other"
+          ]
+        },
+        "ratedPowerW": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "opticsNotes": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "name",
+        "model",
+        "laserType",
+        "ratedPowerW",
+        "opticsNotes"
+      ],
+      "additionalProperties": false
+    },
+    "material": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "basswood",
+            "acrylic",
+            "mdf",
+            "custom"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "supplier": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "batch": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "nominalThicknessMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "thicknessSamplesMm": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "maxItems": 100,
+          "anyOf": [
+            {
+              "maxItems": 0
+            },
+            {
+              "minItems": 5
+            }
+          ]
+        },
+        "minThicknessMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "maxThicknessMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "representativeThicknessMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "measurementMethod": {
+          "const": "median"
+        }
+      },
+      "required": [
+        "kind",
+        "name",
+        "supplier",
+        "batch",
+        "nominalThicknessMm",
+        "thicknessSamplesMm",
+        "minThicknessMm",
+        "maxThicknessMm",
+        "representativeThicknessMm",
+        "measurementMethod"
+      ],
+      "additionalProperties": false
+    },
+    "process": {
+      "type": "object",
+      "properties": {
+        "speed": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "speedUnit": {
+          "enum": [
+            "mm/s",
+            "mm/min"
+          ]
+        },
+        "powerPercent": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "passes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "focusNotes": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "airAssist": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "airPressureKpa": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "surfaceNotes": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "speed",
+        "speedUnit",
+        "powerPercent",
+        "passes",
+        "focusNotes",
+        "airAssist",
+        "airPressureKpa",
+        "surfaceNotes"
+      ],
+      "additionalProperties": false
+    },
+    "compensation": {
+      "type": "object",
+      "properties": {
+        "physicalKerfMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "boxesBurnMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "jointClearanceMm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "source": {
+          "enum": [
+            "reference",
+            "measured",
+            "fitTest"
+          ]
+        }
+      },
+      "required": [
+        "physicalKerfMm",
+        "boxesBurnMm",
+        "jointClearanceMm",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "machineBed": {
+      "type": "object",
+      "properties": {
+        "widthMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "heightMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "exclusiveMinimum": 0
+        },
+        "marginMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "required": [
+        "widthMm",
+        "heightMm",
+        "marginMm"
+      ],
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "minToothWidthMm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "minWebWidthMm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "minHoleEdgeMm": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "calibration": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "profileHash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "calibratedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "operator": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "result": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "cardHash": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "profileHash",
+                "calibratedAt",
+                "operator",
+                "result",
+                "cardHash"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          },
+          "maxItems": 1000
+        }
+      },
+      "required": [
+        "calibration",
+        "history"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "profileId",
+    "version",
+    "name",
+    "status",
+    "machine",
+    "material",
+    "process",
+    "compensation",
+    "machineBed",
+    "rules",
+    "evidence"
+  ],
+  "additionalProperties": false
+}

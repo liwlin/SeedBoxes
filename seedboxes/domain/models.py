@@ -97,3 +97,19 @@ class GeneratedModel:
     generatedAt: str
     geometries: dict[str, bool]
     innerDimensions: dict[str, float]
+
+
+@dataclass(frozen=True)
+class ProcessProfile:
+    schemaVersion: int
+    profileId: str
+    version: int
+    name: str
+    status: str
+    machine: dict[str, Any]
+    material: dict[str, Any]
+    process: dict[str, Any]
+    compensation: dict[str, Any]
+    machineBed: dict[str, Any]
+    rules: dict[str, Any]
+    evidence: dict[str, Any]

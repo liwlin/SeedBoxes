@@ -153,4 +153,14 @@ uv run --locked pytest -q
 uv run --locked python scripts/generate_model.py tests/fixtures/project.json --output model.json
 ```
 
-`model.json` 是开发检查数据，不是可直接交给机器的制造文件。尚未实现制造体检、排版、工程保存和三维界面；Windows 打包与实物试切仍待验收。支持范围与决策见 [开发进度](docs/development/manufacturing-progress.md)。
+`model.json` 是开发检查数据，不是可直接交给机器的制造文件。尚未实现制造体检、排版和三维界面；工程/加工档案存储后端已在 T05 加入，旧表单界面尚未接入。Windows 打包与实物试切仍待验收。支持范围与决策见 [开发进度](docs/development/manufacturing-progress.md)。
+
+### 工程与加工档案存储（T05）
+
+- 工程文件：`*.seedbox.json`，UTF-8，20 MiB 上限；同目录原子替换，上一份文件保存为 `.bak`。
+- 较新 schema 的工程只读打开，保留原始字段，禁止覆盖保存；打开备份或恢复记录后需另选正式保存位置。
+- Windows 数据目录：`%LOCALAPPDATA%/MakerSeed/SeedBoxes/`。`profiles/<profileId>/<version>.json` 保留所有加工档案版本，`recovery/` 独立保存未同步的工程快照。Linux 开发时使用 `$XDG_DATA_HOME` 或 `~/.local/share` 下同名目录。
+- 实测厚度至少五点，保存原始读数以及最小值、最大值、中位数。加工条件改变后校准失效，旧版本证据保留；旧工程的档案快照不会自动跟随全局档案修改。
+- 后端提供 `load_project`、`save_project`、`save_recovery`、`load_recovery`、`list_recovery`、`create_profile`、`save_profile`、`list_profiles`。保存/打开文件由原生对话框选择，取消有单独状态。
+
+这些接口已通过真实临时文件读写测试；编辑器按钮、2 秒自动恢复计时和退出清理将在 T06 接入。档案版本需要支持硬链接的本地文件系统（例如 Windows NTFS），失败会明确报告，不退回覆盖旧版本。
