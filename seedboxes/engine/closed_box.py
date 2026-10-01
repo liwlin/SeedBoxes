@@ -80,10 +80,18 @@ class ClosedBoxAdapter:
             raise ValueError('未支持的生成器或适配器版本')
         if project.engine != {k:fp[k] for k in ('name','version','commit')}:
             raise ValueError('工程引擎版本不匹配；请显式迁移工程')
-        if any(f['enabled'] for f in project.features):
-            raise ValueError('板件捕获阶段尚未支持面编辑特征')
         params=parameters_for(project,mode)
         box=CapturingClosedBox()
+        for feature in project.features:
+            if not feature['enabled']:
+                continue
+            if feature['rotationDeg'] != 0:
+                raise ValueError('首批开孔仅支持零旋转')
+            sizes = feature['parameters'].values()
+            burn = project.profileSnapshot['compensation']['boxesBurnMm']
+            if any(size <= 2*burn for size in sizes):
+                raise ValueError('开孔尺寸必须大于两倍 burn 补偿')
+            box.panel_features.setdefault(ROLES[feature['panelId']], []).append(feature)
         def fail(message): raise ValueError('参数无效：'+message)
         box.argparser.error=fail
         args=[]
@@ -102,9 +110,14 @@ class ClosedBoxAdapter:
             panels=[]
             for i,(role,source) in enumerate(ROLES.items()):
                 wall=walls[source]
-                if len(wall['paths'])!=1:
+                tagged = list(zip(wall['paths'], wall['featureIds']))
+                outlines = [path for path, feature_id in tagged if feature_id is None]
+                if len(outlines) != 1:
                     raise ValueError('未预期的基础板件路径数')
-                outer=capture_path(wall['paths'][0],wall['canvasToLocal'],role+':outer','cut_outer',box.inner_corners)
+                outer=capture_path(outlines[0],wall['canvasToLocal'],role+':outer','cut_outer',box.inner_corners)
+                holes=tuple(capture_path(path,wall['canvasToLocal'],role+':feature:'+feature_id,
+                                         'cut_inner',box.inner_corners)
+                            for path,feature_id in tagged if feature_id is not None)
                 joints=[]
                 for edge,(mate,mate_edge),kind in zip(EDGE_NAMES,MATES[role],wall['edges']):
                     joint_id='|'.join(sorted((role+':'+edge,mate+':'+mate_edge)))
@@ -113,7 +126,7 @@ class ClosedBoxAdapter:
                                    'type':'tab' if kind=='f' else 'slot', 'sourceEdgeType':kind,
                                    'intervals':None,'nominalClearanceMm':0.})
                 panels.append(CapturedPanel(role,chr(65+i),source,box.thickness,wall['width'],wall['height'],
-                    PanelGeometry(outer),tuple(wall['canvasToLocal'])[:6],wall['edges'],
+                    PanelGeometry(outer,holes),tuple(wall['canvasToLocal'])[:6],wall['edges'],
                     assembly_frame(role,width,depth,height),tuple(joints)))
             return CapturedModel(mode,project.projectId,project.revision,tuple(panels),fp,
                                  {'widthMm':width,'depthMm':depth,'heightMm':height},

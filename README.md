@@ -142,3 +142,15 @@ uv run --locked python scripts/verify_baseline.py
 ```
 
 Boxes.py 固定至 `9d93cd81b05d6ef5b0f3d4b4d6ed7eaf5bbed0dd`，不再引用旧开发机相邻目录。上方作品图片统计是旧版本记录；当前实际生成器数量与格式以基线脚本输出为准。
+
+### 制造基础开发分支（T01–T04）
+
+新增受限 `ClosedBox` 结构化几何后端：六块板的稳定身份、名义轮廓、补偿刀路、装配坐标和工程契约。桌面界面与传统二维流程保持现状。诊断命令：
+
+```bash
+uv sync --locked
+uv run --locked pytest -q
+uv run --locked python scripts/generate_model.py tests/fixtures/project.json --output model.json
+```
+
+`model.json` 是开发检查数据，不是可直接交给机器的制造文件。尚未实现制造体检、排版、工程保存和三维界面；Windows 打包与实物试切仍待验收。支持范围与决策见 [开发进度](docs/development/manufacturing-progress.md)。

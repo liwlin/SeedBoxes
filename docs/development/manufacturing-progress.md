@@ -44,3 +44,12 @@ Implementation not yet complete. Windows UI/packaging and physical cutting are n
 - Added reciprocal edge adjacency and right-handed assembly transforms. Tooth intervals remain explicitly null and capability false; T09 must extract/validate them before tooth-clearance checks.
 - Ruling: First batch restricts finger settings to upstream rectangular defaults and inner_corners=corner; disallows inner dimensions below four board thicknesses. Explicit rejection is preferable to silently presenting unverified combinations.
 - Legacy render and thumbnail render now share a reentrant engine gate with the new adapter; no GUI behavior changed.
+
+### T04
+- RED: 13 compensation/service cases failed before implementation.
+- GREEN: full suite 50 passed. Burn changes only toolpaths; equivalent internal/external dimensions preserve geometry; enabled circle/rectangle holes pass through upstream compensation exactly once.
+- Added bounded LRU snapshot cache (8 entries / 64 MiB of serialized payload), defensive copies, structured `Api.generate_model`, and diagnostic CLI. Cache byte budget describes serialized payload, not an exact Python process memory bound.
+- Ruling: Implemented two zero-rotation backend hole primitives now to make T04's hole-compensation test real; feature editing UI remains T08. No enhanced manufacturing export is advertised.
+- Upstream circular holes use cubic approximation: the 8 mm test hole's extrema differ from an ideal circle by approximately 0.0000024 mm. The assertion uses 0.00001 mm absolute tolerance, preserving the upstream curve instead of substituting a new circle.
+- Nominal and cut contours are real paths; packing, joint intervals, hole-edge clearance and physical fit remain unverified. Results explicitly report MANUFACTURING_UNCHECKED.
+- Run: `uv run --locked python scripts/generate_model.py tests/fixtures/project.json --output /tmp/seedboxes-model.json`.

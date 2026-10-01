@@ -1,6 +1,7 @@
 """JS↔Python 桥接 API."""
 from __future__ import annotations
 
+import logging
 import base64
 import functools
 import gettext
@@ -288,6 +289,22 @@ class Api:
     def __init__(self) -> None:
         self._window: webview.Window | None = None
         self._render_lock = ENGINE_LOCK
+        from seedboxes.engine.geometry_service import GeometryService
+        self._geometry_service = GeometryService()
+
+    def generate_model(self, payload: dict[str, Any]) -> dict[str, Any]:
+        """Experimental structured geometry. Legacy preview/export stay independent."""
+        from seedboxes.domain.serialization import normalize_project, to_json
+        try:
+            model = self._geometry_service.generate(normalize_project(payload))
+            return {"ok": True, "data": to_json(model)}
+        except ValueError as exc:
+            return {"ok": False, "error": {"code": "INVALID_PROJECT",
+                    "messageZh": str(exc), "retryable": False}}
+        except Exception:
+            logging.exception("Structured geometry generation failed")
+            return {"ok": False, "error": {"code": "GENERATION_FAILED",
+                    "messageZh": "结构化几何生成失败，请检查日志。", "retryable": False}}
 
     def set_window(self, window: webview.Window) -> None:
         self._window = window
