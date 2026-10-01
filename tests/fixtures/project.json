@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "projectId": "0630b29a-2d27-42d7-b539-cc3b868fae01",
+  "revision": 0,
+  "name": "SeedBoxes 制造基线",
+  "units": "mm",
+  "engine": {"name": "boxes", "version": "1.2", "commit": "9d93cd81b05d6ef5b0f3d4b4d6ed7eaf5bbed0dd"},
+  "adapter": {"id": "closed-box", "version": "1.0.0"},
+  "generatorId": "ClosedBox",
+  "parameters": {"x": 120, "y": 80, "h": 60, "outside": false, "thickness": 3},
+  "profileSnapshot": {"status": "reference", "compensation": {"boxesBurnMm": 0.1, "physicalKerfMm": null, "jointClearanceMm": 0}},
+  "features": [],
+  "layout": {"sheetWidthMm": 600, "sheetHeightMm": 400, "marginMm": 5, "gapMm": 3, "allowRotation": true},
+  "validationPolicy": {"ruleSetVersion": "1.0.0", "thresholds": {}},
+  "calibrationRef": null,
+  "trialRecords": [],
+  "createdAt": "2026-10-01T02:43:43Z",
+  "updatedAt": "2026-10-01T02:43:43Z",
+  "viewState": {}
+}

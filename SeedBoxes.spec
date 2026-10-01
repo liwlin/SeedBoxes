@@ -52,6 +52,7 @@ gen_modules = collect_submodules('boxes.generators')
 # 必须显式拷贝，否则打包后中文翻译失效 + 168 张样图全部丢失
 extra_datas = [
     ('web', 'web'),
+    ('schemas', 'schemas'),
     ('logo.ico', '.'),
 ]
 if os.path.isdir(os.path.join(BOXES_ROOT, 'static')):

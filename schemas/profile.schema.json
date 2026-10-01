@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seedboxes.local/schemas/profile.schema.json",
+  "type": "object",
+  "properties": {
+    "status": {
+      "enum": [
+        "reference",
+        "calibrated",
+        "retired"
+      ]
+    },
+    "compensation": {
+      "type": "object",
+      "properties": {
+        "boxesBurnMm": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "physicalKerfMm": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "jointClearanceMm": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "boxesBurnMm",
+        "jointClearanceMm"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "status",
+    "compensation"
+  ],
+  "additionalProperties": true
+}

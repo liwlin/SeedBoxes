@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seedboxes.local/schemas/issue.schema.json",
+  "type": "object",
+  "properties": {
+    "issueId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ruleId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "enum": [
+        "error",
+        "warning",
+        "info"
+      ]
+    },
+    "category": {
+      "type": "string",
+      "minLength": 1
+    },
+    "panelId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "featureId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pathIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "sheetId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "messageZh": {
+      "type": "string",
+      "minLength": 1
+    },
+    "geometryLocation": {
+      "type": "object"
+    },
+    "suggestedActionZh": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidenceKind": {
+      "enum": [
+        "analytic",
+        "sampled",
+        "configuration"
+      ]
+    }
+  },
+  "required": [
+    "issueId",
+    "ruleId",
+    "severity",
+    "category",
+    "pathIds",
+    "messageZh",
+    "geometryLocation",
+    "suggestedActionZh",
+    "evidenceKind"
+  ],
+  "additionalProperties": true
+}

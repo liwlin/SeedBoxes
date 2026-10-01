@@ -22,6 +22,7 @@ classifiers = [
 dependencies = [
     "pywebview>=5.0",
     "boxes",
+    "jsonschema>=4,<5",
 ]
 
 [project.optional-dependencies]
@@ -39,7 +40,7 @@ Repository = "https://github.com/makerseed/SeedBoxes"
 Upstream = "https://github.com/florianfesti/boxes"
 
 [dependency-groups]
-dev = ["pytest>=8,<9", "tomli>=2,<3", "jsonschema>=4,<5"]
+dev = ["pytest>=8,<9", "tomli>=2,<3"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

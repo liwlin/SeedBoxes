@@ -29,3 +29,10 @@ Implementation not yet complete. Windows UI/packaging and physical cutting are n
 - Observed 172 web-visible generators, not the historical README's 179. The stale lock also called this project boxes-client. Updated documentation rather than inventing coverage.
 - Dependency changes follow the actual pinned release metadata: removed stale local-master-only requirements; added pytest/tomli/jsonschema development tooling. Existing common dependency locks retained by uv where valid.
 - Baseline manifests for ClosedBox and ABox exclude metadata timestamps; legacy backend smoke test included.
+
+### T02
+- RED: 18 contract tests failed because serialization was not implemented.
+- GREEN: 23 tests passed including baseline; schemas and example validate.
+- Added JSON dataclasses, version/units/finite-number checks, detached input snapshots and stable manufacturing hash (view/name/time excluded).
+- Ruling: Use jsonschema as a runtime dependency, not only a test dependency, to enforce the same contract at the backend boundary. Adds a small dependency set but avoids two diverging validators. Schemas are included in the PyInstaller resource list.
+- Ruling: T02 defines only interfaces needed by this batch; later job/storage/calibration contracts stay in the plan until their implementations exist.
