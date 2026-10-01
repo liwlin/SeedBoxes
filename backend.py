@@ -15,6 +15,8 @@ from typing import Any
 
 import webview
 
+from seedboxes.engine.bridge import ENGINE_LOCK, serialized_render
+
 import boxes
 import boxes.edges as boxes_edges
 import boxes.generators as gen_module
@@ -243,6 +245,7 @@ def _swallow_argparse_error(msg: str) -> None:
     raise _ArgparseError(msg)
 
 
+@serialized_render
 def _render_fallback_svg(name: str) -> str | None:
     """没有官方样图时，用默认参数自渲染一张 SVG 当缩略图。"""
     cached = _cache_get(name)
@@ -284,7 +287,7 @@ def _render_fallback_svg(name: str) -> str | None:
 class Api:
     def __init__(self) -> None:
         self._window: webview.Window | None = None
-        self._render_lock = threading.Lock()
+        self._render_lock = ENGINE_LOCK
 
     def set_window(self, window: webview.Window) -> None:
         self._window = window

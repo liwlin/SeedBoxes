@@ -36,3 +36,11 @@ Implementation not yet complete. Windows UI/packaging and physical cutting are n
 - Added JSON dataclasses, version/units/finite-number checks, detached input snapshots and stable manufacturing hash (view/name/time excluded).
 - Ruling: Use jsonschema as a runtime dependency, not only a test dependency, to enforce the same contract at the backend boundary. Adds a small dependency set but avoids two diverging validators. Schemas are included in the PyInstaller resource list.
 - Ruling: T02 defines only interfaces needed by this batch; later job/storage/calibration contracts stay in the plan until their implementations exist.
+
+### T03
+- RED: 12 adapter tests failed before implementation.
+- GREEN: six stable roles and A–F codes; real upstream local contours agree point-for-point with an independent renderer. Rotation/mirror and move-only capture also covered.
+- No upstream class methods patched. A local ClosedBox subclass captures high-level boundaries and existing Surface paths.
+- Added reciprocal edge adjacency and right-handed assembly transforms. Tooth intervals remain explicitly null and capability false; T09 must extract/validate them before tooth-clearance checks.
+- Ruling: First batch restricts finger settings to upstream rectangular defaults and inner_corners=corner; disallows inner dimensions below four board thicknesses. Explicit rejection is preferable to silently presenting unverified combinations.
+- Legacy render and thumbnail render now share a reentrant engine gate with the new adapter; no GUI behavior changed.
