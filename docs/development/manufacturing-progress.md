@@ -53,3 +53,13 @@ Implementation not yet complete. Windows UI/packaging and physical cutting are n
 - Upstream circular holes use cubic approximation: the 8 mm test hole's extrema differ from an ideal circle by approximately 0.0000024 mm. The assertion uses 0.00001 mm absolute tolerance, preserving the upstream curve instead of substituting a new circle.
 - Nominal and cut contours are real paths; packing, joint intervals, hole-edge clearance and physical fit remain unverified. Results explicitly report MANUFACTURING_UNCHECKED.
 - Run: `uv run --locked python scripts/generate_model.py tests/fixtures/project.json --output /tmp/seedboxes-model.json`.
+
+## Final review and batch status
+
+- Independent read-only review completed for base `654303a` through T04 `67d6c05`; no critical or high-severity issue found. One medium issue was reproduced: generated path schemas accepted arbitrary command tokens/arity/coordinate types.
+- RED: four malformed-command cases were accepted. FIX: shared pathCommand definition limits M/L/C/Z, exact lengths and numeric coordinates. GREEN: 54 tests passed; contracts and geometry-diff checks passed.
+- Packaging investigation: existing PyInstaller `collect_all('boxes')` already includes distribution metadata; no duplicate metadata-copy change retained. This is a static review, not proof that a Windows executable runs.
+- Review scope rulings: hole containment/overlap/edge clearance/physical fit and tooth intervals remain T09; storage/UI/packing/export/3D remain subsequent tasks. Very large off-panel feature coordinates are not a validated use case; later feature/manufacturing validation must enforce practical geometric limits. This foundation does not expose an enhanced cutting export.
+- Batch T01–T04 complete as a software foundation. Public capability flags remain conservative: no manufacturing checks, no 3D, no enhanced export. No claim of production readiness or successful physical cutting.
+- Next entry: T05 project/profile persistence, then T06 calibration and T07 scheduling/UI; preserve this geometry baseline during integration.
+- Git delivery: independent feature branch, per-task commits and a separate review-fix commit; do not merge main automatically.

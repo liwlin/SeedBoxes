@@ -124,3 +124,11 @@ def test_structured_backend_api_and_legacy_coexist():
     validate_contract('generated-model',result['data'])
     assert 'svg' in api.preview('ClosedBox',{'x':120,'y':80,'h':60})
     assert not api.generate_model({'schemaVersion':99})['ok']
+
+
+@pytest.mark.parametrize('commands',[[['BOGUS'],['C','x']],[['M',0,0],['L',1]],[['M',0,0],['Z',1]],[['M',0,0],['C',1,2,3,4,5,'bad']]])
+def test_generated_contract_rejects_malformed_commands(commands):
+    payload=to_json(service().generate(normalize_project(data())))
+    payload['panels'][0]['nominalGeometry']['outer']['commands']=commands
+    with pytest.raises(ValueError):
+        validate_contract('generated-model',payload)
