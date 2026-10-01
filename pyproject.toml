@@ -22,6 +22,7 @@ classifiers = [
 dependencies = [
     "pywebview>=5.0",
     "boxes",
+    "jsonschema>=4,<5",
 ]
 
 [project.optional-dependencies]
@@ -31,9 +32,16 @@ build = [
 
 # boxes 通过 git 直接拉上游 release-1.2 标签（不污染本仓库 + 锁版本可复现）
 [tool.uv.sources]
-boxes = { git = "https://github.com/florianfesti/boxes", rev = "release-1.2" }
+boxes = { git = "https://github.com/florianfesti/boxes", rev = "9d93cd81b05d6ef5b0f3d4b4d6ed7eaf5bbed0dd" }
 
 [project.urls]
 Homepage = "https://github.com/makerseed/SeedBoxes"
 Repository = "https://github.com/makerseed/SeedBoxes"
 Upstream = "https://github.com/florianfesti/boxes"
+
+[dependency-groups]
+dev = ["pytest>=8,<9", "tomli>=2,<3"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

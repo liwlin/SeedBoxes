@@ -1,0 +1,332 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seedboxes.local/schemas/project.schema.json",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "projectId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "units": {
+      "const": "mm"
+    },
+    "engine": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "commit"
+      ],
+      "additionalProperties": false
+    },
+    "adapter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "generatorId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,119}$"
+    },
+    "parameters": {
+      "type": "object"
+    },
+    "profileSnapshot": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "reference",
+            "calibrated",
+            "retired"
+          ]
+        },
+        "compensation": {
+          "type": "object",
+          "properties": {
+            "boxesBurnMm": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "physicalKerfMm": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "jointClearanceMm": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "boxesBurnMm",
+            "jointClearanceMm"
+          ],
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "status",
+        "compensation"
+      ],
+      "additionalProperties": true
+    },
+    "features": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "properties": {
+          "featureId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]{0,119}$"
+          },
+          "panelId": {
+            "enum": [
+              "front",
+              "back",
+              "left",
+              "right",
+              "top",
+              "bottom"
+            ]
+          },
+          "kind": {
+            "enum": [
+              "circleHole",
+              "rectHole"
+            ]
+          },
+          "operation": {
+            "const": "cut"
+          },
+          "anchor": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "const": "absolute"
+              },
+              "xMm": {
+                "type": "number"
+              },
+              "yMm": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "mode",
+              "xMm",
+              "yMm"
+            ],
+            "additionalProperties": false
+          },
+          "parameters": {
+            "type": "object"
+          },
+          "rotationDeg": {
+            "type": "number"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "featureId",
+          "panelId",
+          "kind",
+          "operation",
+          "anchor",
+          "parameters",
+          "rotationDeg",
+          "enabled"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "circleHole"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "diameterMm": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    }
+                  },
+                  "required": [
+                    "diameterMm"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "widthMm": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "heightMm": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    }
+                  },
+                  "required": [
+                    "widthMm",
+                    "heightMm"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "sheetWidthMm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "sheetHeightMm": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "marginMm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "gapMm": {
+          "type": "number",
+          "minimum": 0
+        },
+        "allowRotation": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "sheetWidthMm",
+        "sheetHeightMm",
+        "marginMm",
+        "gapMm",
+        "allowRotation"
+      ],
+      "additionalProperties": true
+    },
+    "validationPolicy": {
+      "type": "object",
+      "properties": {
+        "ruleSetVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "thresholds": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "ruleSetVersion",
+        "thresholds"
+      ],
+      "additionalProperties": true
+    },
+    "calibrationRef": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "trialRecords": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "viewState": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "projectId",
+    "revision",
+    "name",
+    "units",
+    "engine",
+    "adapter",
+    "generatorId",
+    "parameters",
+    "profileSnapshot",
+    "features",
+    "layout",
+    "validationPolicy",
+    "calibrationRef",
+    "trialRecords",
+    "createdAt",
+    "updatedAt",
+    "viewState"
+  ],
+  "additionalProperties": false
+}

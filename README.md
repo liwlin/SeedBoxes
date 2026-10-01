@@ -27,7 +27,7 @@
 SeedBoxes 是基于 [Boxes.py](https://github.com/florianfesti/boxes)（激光切割盒子生成器）开发的桌面客户端，由 [makerseed 种子创客工坊](https://github.com/makerseed) 维护。它把上游 Web 服务器版包装为本地 Windows 桌面 app（PyWebView），并补齐了完整中文界面。
 
 ### 主要特性
-- **179 个生成器** — 完整覆盖上游 boxes 所有可视化生成器
+- **动态发现生成器** — 当前锁定 release-1.2 提交，干净环境验证发现 172 个可视化生成器；旧文档的 179 个来自原本地依赖环境，不作为当前保证
 - **完整中文化** — 加载 boxes 自带的 zh_CN.po 翻译，覆盖率 ~98%；客户端层补 4 级 fallback 翻译链处理上游漏译
 - **作品参考图** — 169 个生成器配实物照片，10 个无图的自动渲染 SVG 示意图（带角标区分）
 - **3 视图导航** — 主页画廊 → 分组浏览 → 编辑器（带面包屑返回）
@@ -130,3 +130,37 @@ SeedBoxes/
 - 上游 zh_CN 翻译贡献者：裘炯涛 \<qiujiongtao@163.com\>
 
 © makerseed 种子创客工坊
+
+## 制造升级开发分支
+
+项目名称保持 **SeedBoxes**。开发方案位于 `docs/superpowers/plans/2026-10-01-seedboxes-manufacturing-upgrade.md`，进度与验证边界位于 `docs/development/manufacturing-progress.md`。
+
+```bash
+uv sync --locked
+uv run --locked pytest -q
+uv run --locked python scripts/verify_baseline.py
+```
+
+Boxes.py 固定至 `9d93cd81b05d6ef5b0f3d4b4d6ed7eaf5bbed0dd`，不再引用旧开发机相邻目录。上方作品图片统计是旧版本记录；当前实际生成器数量与格式以基线脚本输出为准。
+
+### 制造基础开发分支（T01–T04）
+
+新增受限 `ClosedBox` 结构化几何后端：六块板的稳定身份、名义轮廓、补偿刀路、装配坐标和工程契约。桌面界面与传统二维流程保持现状。诊断命令：
+
+```bash
+uv sync --locked
+uv run --locked pytest -q
+uv run --locked python scripts/generate_model.py tests/fixtures/project.json --output model.json
+```
+
+`model.json` 是开发检查数据，不是可直接交给机器的制造文件。尚未实现制造体检、排版和三维界面；工程/加工档案存储后端已在 T05 加入，旧表单界面尚未接入。Windows 打包与实物试切仍待验收。支持范围与决策见 [开发进度](docs/development/manufacturing-progress.md)。
+
+### 工程与加工档案存储（T05）
+
+- 工程文件：`*.seedbox.json`，UTF-8，20 MiB 上限；同目录原子替换，上一份文件保存为 `.bak`；修复损坏的正式文件时，损坏原文单独保存为 `.corrupt.bak`，保留已有的有效备份。
+- 较新 schema 的工程只读打开，保留原始字段，禁止覆盖保存；打开备份或恢复记录后需另选正式保存位置。
+- Windows 数据目录：`%LOCALAPPDATA%/MakerSeed/SeedBoxes/`。`profiles/<profileId>/<version>.json` 保留所有加工档案版本，`recovery/` 独立保存未同步的工程快照。Linux 开发时使用 `$XDG_DATA_HOME` 或 `~/.local/share` 下同名目录。
+- 实测厚度至少五点，保存原始读数以及最小值、最大值、中位数。加工条件改变后校准失效，旧版本证据保留；旧工程的档案快照不会自动跟随全局档案修改。
+- 后端提供 `load_project`、`save_project`、`save_recovery`、`load_recovery`、`list_recovery`、`create_profile`、`save_profile`、`list_profiles`。保存/打开文件由原生对话框选择，取消有单独状态。
+
+这些接口已通过真实临时文件读写测试；编辑器按钮、2 秒自动恢复计时和退出清理将在 T06 接入。档案版本需要支持硬链接的本地文件系统（例如 Windows NTFS），失败会明确报告，不退回覆盖旧版本。
