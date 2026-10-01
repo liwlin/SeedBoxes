@@ -81,3 +81,14 @@ Base: `c8e96bed1ca9dfaea95501ab7edb1ccfd9576ae8` (remote first-batch head).
 - Added `seedboxes/desktop/persistence.py` to keep storage handling out of the legacy rendering class; backend remains a thin bridge. Dialog tests substitute only the native picker; filesystem IO stays real.
 - Schema errors now report the field/rule without echoing potentially large user documents. This was reproduced by a failing privacy/size test.
 - Windows native dialogs, packaged executable behavior and power-loss recovery remain untested in this Linux session.
+
+### T05 independent review and fixes
+
+- Review of `c8e96be..b3d563e` reproduced P1 backup loss when restoring a corrupt formal file followed by a sharing violation, and P2 inconsistent handling of integral JSON schema versions (`1.0` / `99.0`).
+- Fixed P1: `test_failed_restore_preserves_last_valid_backup` RED→GREEN. A corrupt or invalid formal document is backed up separately as `.corrupt.bak`; a valid `.bak` is not overwritten during repair, including if final replacement fails.
+- Fixed P2: `test_integral_schema_version_round_trips_consistently` RED→GREEN. Accepted integral versions use a consistent load/save gate; current project/profile integer fields normalize to integers. Future integral-float versions remain read-only and overwrite-protected.
+- Final verification: 90 tests passed; schema validation passed; baseline geometry comparison remains 662 points with zero error.
+- Final Ruling: Windows native-dialog/packaged behavior and sudden power-loss durability remain unverified because this session is Linux and failure injection models software IO errors only. Cost: Windows acceptance remains required before a release claim.
+- Final Ruling: General shared/network-filesystem collaboration remains outside this desktop task; immutable profile publication fails explicitly where hard links are unsupported. Cost: such deployments need a different storage strategy.
+- Final Ruling: Physical calibration validity and card provenance belong to T07; persisted evidence must match the profile hash but is a user-supplied record, not machine-attested proof. Cost: a matching record does not guarantee physical fit.
+- Final Ruling: T06 owns editor buttons, autosave timing and exit lifecycle; T05 delivers tested callable persistence interfaces. Cost: the unchanged legacy form still does not autosave. No other review issues deferred.

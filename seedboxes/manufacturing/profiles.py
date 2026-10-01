@@ -39,6 +39,8 @@ def new_profile(kind: str) -> ProcessProfile:
 def normalize_profile(value) -> ProcessProfile:
     data=to_json(value)
     validate_contract('process-profile',data)
+    data['schemaVersion']=int(data['schemaVersion'])
+    data['version']=int(data['version'])
     material=data['material'];samples=material['thicknessSamplesMm']
     material.update(minThicknessMm=min(samples) if samples else None,
                     maxThicknessMm=max(samples) if samples else None,

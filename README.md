@@ -157,7 +157,7 @@ uv run --locked python scripts/generate_model.py tests/fixtures/project.json --o
 
 ### 工程与加工档案存储（T05）
 
-- 工程文件：`*.seedbox.json`，UTF-8，20 MiB 上限；同目录原子替换，上一份文件保存为 `.bak`。
+- 工程文件：`*.seedbox.json`，UTF-8，20 MiB 上限；同目录原子替换，上一份文件保存为 `.bak`；修复损坏的正式文件时，损坏原文单独保存为 `.corrupt.bak`，保留已有的有效备份。
 - 较新 schema 的工程只读打开，保留原始字段，禁止覆盖保存；打开备份或恢复记录后需另选正式保存位置。
 - Windows 数据目录：`%LOCALAPPDATA%/MakerSeed/SeedBoxes/`。`profiles/<profileId>/<version>.json` 保留所有加工档案版本，`recovery/` 独立保存未同步的工程快照。Linux 开发时使用 `$XDG_DATA_HOME` 或 `~/.local/share` 下同名目录。
 - 实测厚度至少五点，保存原始读数以及最小值、最大值、中位数。加工条件改变后校准失效，旧版本证据保留；旧工程的档案快照不会自动跟随全局档案修改。

@@ -49,18 +49,21 @@ class ProjectStore:
             raise ValueError('未知版本工程只读，不能保存')
         raw = encode(project)
         snapshot = normalize_project(decode(raw))
+        raw = encode(snapshot)
         path = Path(path).resolve()
         with IO_LOCK:
+            backup_target = True
             if path.exists():
                 try:
-                    old = decode(read_bytes(path))
+                    previous = load_document(decode(read_bytes(path)),path)
                 except ValueError:
-                    # Corrupt documents can be intentionally replaced, with raw .bak retained.
-                    old = {}
-                version = old.get('schemaVersion')
-                if type(version) is int and version > CURRENT_SCHEMA:
-                    raise ValueError('目标文件为较新版本，只读，不能覆盖')
-            backup = atomic_write(path,raw,backup=True)
+                    # Do not destroy the last good .bak while repairing a corrupt formal file.
+                    # Keep the damaged bytes separately, including on final replacement failure.
+                    backup_target = path.with_name(path.name+'.corrupt.bak')
+                else:
+                    if isinstance(previous,ReadOnlyProject):
+                        raise ValueError('目标文件为较新版本，只读，不能覆盖')
+            backup = atomic_write(path,raw,backup=backup_target)
         return SaveReceipt(snapshot.projectId,snapshot.revision,str(path),
             datetime.now(timezone.utc).isoformat(),str(backup) if backup else None,_digest(raw))
 

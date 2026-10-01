@@ -52,9 +52,10 @@ def test_atomic_save_failure_keeps_previous(tmp_path,monkeypatch,failure):
     assert not list(tmp_path.glob('*.tmp'))
 
 
-def test_future_schema_is_read_only(tmp_path):
+@pytest.mark.parametrize("version",[99,99.0])
+def test_future_schema_is_read_only(tmp_path,version):
     store=storage(tmp_path);path=tmp_path/'future.seedbox.json'
-    raw=to_json(project());raw['schemaVersion']=99;raw['unknownFutureField']={'keep':[1,2,3]}
+    raw=to_json(project());raw['schemaVersion']=version;raw['unknownFutureField']={'keep':[1,2,3]}
     path.write_text(json.dumps(raw),encoding='utf-8');before=path.read_bytes()
     loaded=store.load(path)
     assert loaded.readOnly and loaded.document==raw
@@ -118,3 +119,29 @@ def test_newer_recovery_survives_cleanup_for_older_save(tmp_path):
     store.write_recovery(replace(p,revision=1))
     assert not store.clear_recovery(receipt)
     assert store.list_recovery()[0]['revision']==1
+
+
+def test_failed_restore_preserves_last_valid_backup(tmp_path,monkeypatch):
+    store=storage(tmp_path);path=tmp_path/'box.seedbox.json';p=project()
+    store.save(p,path);receipt=store.save(replace(p,revision=1),path)
+    backup=Path(receipt.backupPath);good=backup.read_bytes();recovered=store.load(backup)
+    path.write_bytes(b'{corrupt')
+    atomic=importlib.import_module('seedboxes.storage.atomic');real_replace=atomic.os.replace
+    def fail_final(src,dst):
+        if Path(dst)==path:raise PermissionError('simulated Windows sharing violation')
+        return real_replace(src,dst)
+    monkeypatch.setattr(atomic.os,'replace',fail_final)
+    with pytest.raises(OSError):store.save(recovered,path)
+    assert backup.read_bytes()==good
+    assert store.load(backup)==p
+
+
+def test_integral_schema_version_round_trips_consistently(tmp_path):
+    store=storage(tmp_path);path=tmp_path/'box.seedbox.json'
+    raw=to_json(project());raw['schemaVersion']=1.0;raw['revision']=0.0
+    accepted=normalize_project(raw)
+    store.save(accepted,path)
+    assert store.load(path)==accepted
+    # Existing files encoded by other JSON serializers must follow the same policy.
+    path.write_text(json.dumps(raw))
+    assert store.load(path)==accepted

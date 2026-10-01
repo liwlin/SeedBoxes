@@ -67,6 +67,9 @@ def validate_contract(name: str, data: dict) -> None:
 def normalize_project(data: dict) -> Project:
     data = deepcopy(data)
     validate_contract('project', data)
+    # JSON Schema treats integral floats as integers; persist a canonical representation.
+    data['schemaVersion'] = int(data['schemaVersion'])
+    data['revision'] = int(data['revision'])
     ids = [f['featureId'] for f in data['features']]
     if len(ids) != len(set(ids)):
         raise ValueError('特征 ID 不能重复')

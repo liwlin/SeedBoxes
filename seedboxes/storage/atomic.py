@@ -64,7 +64,7 @@ def _stage(path: Path, raw: bytes) -> Path:
         raise
 
 
-def atomic_write(path: Path, raw: bytes, *, backup=False, exclusive=False) -> Path | None:
+def atomic_write(path: Path, raw: bytes, *, backup: bool | Path = False, exclusive=False) -> Path | None:
     path = Path(path)
     if len(raw) > MAX_BYTES:
         raise ValueError('文件超过 20 MiB 限制')
@@ -76,7 +76,7 @@ def atomic_write(path: Path, raw: bytes, *, backup=False, exclusive=False) -> Pa
         backup_temp = None
         try:
             if previous is not None:
-                backup_path = path.with_name(path.name+'.bak')
+                backup_path = backup if isinstance(backup,Path) else path.with_name(path.name+'.bak')
                 backup_temp = _stage(backup_path,previous)
                 os.replace(backup_temp,backup_path)
             if exclusive:
