@@ -22,3 +22,10 @@ Scope: first delivery batch T01–T04, as specified by the plan's execution hand
 ## Evidence
 
 Implementation not yet complete. Windows UI/packaging and physical cutting are not available in this Linux session.
+
+### T01
+- RED: test_lock_has_no_local_boxes_source failed on editable ../boxes-1.2/boxes-master.
+- GREEN: clean Python 3.10.21 uv environment resolves the exact Git commit; baseline SVG renders.
+- Observed 172 web-visible generators, not the historical README's 179. The stale lock also called this project boxes-client. Updated documentation rather than inventing coverage.
+- Dependency changes follow the actual pinned release metadata: removed stale local-master-only requirements; added pytest/tomli/jsonschema development tooling. Existing common dependency locks retained by uv where valid.
+- Baseline manifests for ClosedBox and ABox exclude metadata timestamps; legacy backend smoke test included.

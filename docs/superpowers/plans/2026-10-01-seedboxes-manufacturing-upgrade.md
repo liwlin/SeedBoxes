@@ -719,7 +719,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 
 以下每个任务应形成独立可检查提交。命令在完成 T01 开发依赖安装后执行；测试文件在对应任务创建。名称是待实现接口，不表示现有代码已经包含。
 
-### T01：修复可复现依赖并建立基线
+### Task 1 (T01): 修复可复现依赖并建立基线
 
 **Files:** 修改 `pyproject.toml`、`uv.lock`；新增 `scripts/verify_baseline.py`、`tests/test_baseline.py`、`tests/fixtures/baseline/`。
 
@@ -733,7 +733,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 
 **完成门槛：** 没有继承旧开发机路径；记录实际生成器数；暂不宣称 179 个全部可渲染。
 
-### T02：建立项目、板件和 API 契约
+### Task 2 (T02): 建立项目、板件和 API 契约
 
 **Files:** 新增 `seedboxes/domain/models.py`、`serialization.py`；新增 `schemas/*.schema.json` 本期所需文件；新增 `tests/test_contracts.py`、`scripts/validate_contracts.py`。
 
@@ -745,7 +745,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 运行上述测试及 `uv run python scripts/validate_contracts.py`，所有样例匹配 Schema。
 - [ ] 提交 `feat: define manufacturing project contracts`。
 
-### T03：ClosedBox 高层捕获与稳定身份小原型
+### Task 3 (T03): ClosedBox 高层捕获与稳定身份小原型
 
 **Files:** 新增 `engine/adapter_base.py`、`bridge.py`、`capture.py`、`paths.py`、`closed_box.py`、`registry.py`；新增 `tests/test_closed_box_capture.py`；修改 `backend.py` 仅接入桥接。
 
@@ -759,7 +759,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 
 **止损门槛：** 如果一个受限 ClosedBox 都无法可靠对应身份和轮廓，停止扩模板，提交具体失败样例与替代捕获入口；不以任意 SVG 猜测补上。
 
-### T04：建立名义轮廓与一次补偿刀路
+### Task 4 (T04): 建立名义轮廓与一次补偿刀路
 
 **Files:** 新增 `engine/geometry_service.py`；修改 `bridge.py`、`closed_box.py`、`paths.py`；新增 `tests/test_compensation.py`、`scripts/geometry_diff.py`。
 
@@ -771,7 +771,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 比较解析宽高/孔径/榫间隔与结果；最大几何误差按本方案容差规则，不把图像相似当通过。
 - [ ] 提交 `feat: separate nominal geometry from compensated toolpaths`。
 
-### T05：工程保存、加工档案与版本恢复
+### Task 5 (T05): 工程保存、加工档案与版本恢复
 
 **Files:** 新增 `storage/projects.py`、`migrations.py`、`manufacturing/profiles.py`、`desktop/dialogs.py`；新增 `tests/test_project_storage.py`、`test_profiles.py`。
 
@@ -783,7 +783,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 测试读写中断、截断 JSON、20 MiB 限制和五点厚度记录；验证全局档案变更不修改旧项目。
 - [ ] 提交 `feat: persist projects and versioned process profiles`。
 
-### T06：宿主解耦、实时调度与状态反馈
+### Task 6 (T06): 宿主解耦、实时调度与状态反馈
 
 **Files:** 新增 `engine/scheduler.py`、`desktop/api.py`、`web/modules/api/seed-api.js`、`store/project-store.js`、`jobs/job-client.js`；修改 `backend.py`、`web/app.js`；新增 `tests/test_scheduler.py`、`tests/manual/async-ui.md`。
 
@@ -795,7 +795,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 运行测试；手动快速改值 20 次、切项目、引发参数错误，检查不会覆盖新结果、不出现无限任务队列。
 - [ ] 提交 `feat: schedule versioned geometry jobs`。
 
-### T07：配合校准卡与档案回填
+### Task 7 (T07): 配合校准卡与档案回填
 
 **Files:** 新增 `manufacturing/calibration.py`、`web/modules/editor/calibration-view.js`；新增 `tests/test_calibration.py`。
 
@@ -807,7 +807,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 检查每档刀路只补偿一次、编号可辨、记录回填到新档案版本；实际试切留待 T11。
 - [ ] 提交 `feat: add fit calibration cards and traceable results`。
 
-### T08：最小逐面孔洞与项目历史
+### Task 8 (T08): 最小逐面孔洞与项目历史
 
 **Files:** 新增 `manufacturing/features.py`、`web/modules/editor/feature-form.js`；修改 `closed_box.py`、`project-store.js`；新增 `tests/test_features.py`。
 
@@ -819,7 +819,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 验证保存重开、撤销重做、孔越界时保留输入且阻断导出；历史按第十一章合并和限制。
 - [ ] 提交 `feat: add persistent panel hole features`。
 
-### T09：规则引擎、二维定位与基础排版
+### Task 9 (T09): 规则引擎、二维定位与基础排版
 
 **Files:** 新增 `manufacturing/rules.py`、`layout.py`、`resources/manufacturing-rules.json`、`web/modules/editor/panel-view.js`、`validation-view.js`；新增 `tests/test_rules.py`、`test_layout.py`。
 
@@ -831,7 +831,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] UI 点击 issue 定位到板件/路径；对临界误差、缺阈值和旧报告显示正确状态；运行上述测试。
 - [ ] 提交 `feat: validate manufacturing geometry with panel locations`。
 
-### T10：版本绑定导出与工作台整合
+### Task 10 (T10): 版本绑定导出与工作台整合
 
 **Files:** 新增 `manufacturing/svg_export.py`、`reports.py`、`web/modules/editor/manufacturing-view.js`、`profile-view.js`、`project-files.js`；修改 `desktop/api.py`、`web/index.html`、`web/styles.css`；新增 `tests/test_export.py`。
 
@@ -843,7 +843,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 导出后重新解析 SVG，对比六板、孔数、路径语义及尺寸；目标激光软件导入检查列入 T11。
 - [ ] 提交 `feat: export validated manufacturing snapshots`。
 
-### T11：V0.2 打包、性能与实体闭环验收
+### Task 11 (T11): V0.2 打包、性能与实体闭环验收
 
 **Files:** 修改 `SeedBoxes.spec`、`app.py`、`build_uv.bat`；新增 `scripts/benchmark_geometry.py`、`verify_release.py`、`desktop/capabilities.py`、`tests/manual/windows-release.md`、`tests/manual/physical-trial.md`；更新 README/DEVELOPMENT。
 
@@ -855,7 +855,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 用户或现场人员完成校准卡和 ClosedBox 试切，填写第十八章记录；AI 无法现场加工时明确交接，不伪造通过。
 - [ ] 修复有证据的问题，提交 `release: prepare manufacturing mvp validation`；实体门槛通过后才标该档案已验证。
 
-### T12：真实板件三维与二维联动
+### Task 12 (T12): 真实板件三维与二维联动
 
 **Files:** 新增 `assembly/transforms.py`、`web/modules/three/assembly-view.js`、`camera-controls.js`、`scripts/vendor_frontend.py`、`measure_webview.py`；修改资源清单/打包；新增 `tests/test_assembly_transforms.py`、`tests/manual/three-view.md`。
 
@@ -867,7 +867,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 在 WebView2 内测 30 FPS 目标、20 次工程切换 GPU 资源回收、WebGL 不可用降级；二维导出不受影响。
 - [ ] 提交 `feat: preview authoritative panels in 3d`。
 
-### T13：静态干涉和教学装配示意
+### Task 13 (T13): 静态干涉和教学装配示意
 
 **Files:** 新增 `assembly/collision.py`；扩展三维 UI；新增 `tests/test_collision.py`、`tests/manual/assembly-teaching.md`。
 
@@ -879,7 +879,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 对三维误差容限与不同板厚测试；标明未进行装配路径验证，人工录制的步骤另记来源。
 - [ ] 提交 `feat: add static interference checks and assembly guides`。
 
-### T14：完整面编辑、文字和电子元件模板
+### Task 14 (T14): 完整面编辑、文字和电子元件模板
 
 **Files:** 扩展 `features.py`、前端编辑模块；新增 `manufacturing/component_templates.py`、`font_outlines.py`、`resources/template-manifests/`、`font-manifest.json`；新增 `tests/test_component_templates.py`、`test_text_outlines.py`。
 
@@ -891,7 +891,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 保存重开与 SVG 导出比较孔位和文字轮廓；无字体场景可导出旧轮廓、不可静默替换字体。
 - [ ] 提交 `feat: add reusable enclosure component features`。
 
-### T15：模板逐步适配与课堂模式
+### Task 15 (T15): 模板逐步适配与课堂模式
 
 **Files:** 新增 `engine/a_box.py` 等逐个适配；扩展 `resources/capabilities.json`、`web/modules/editor/classroom-view.js`、`scripts/validate_capabilities.py`；新增 `tests/test_adapter_capabilities.py`。
 
@@ -903,7 +903,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 执行 `uv run python scripts/validate_capabilities.py`，清单与实现一致；检查传统二维模板仍正常。
 - [ ] 提交 `feat: add verified generator capabilities and classroom presets`。
 
-### T16：异形排版、余料与成本（独立后续项目）
+### Task 16 (T16): 异形排版、余料与成本（独立后续项目）
 
 **Files:** 新增 `manufacturing/nesting.py`、`costs.py`、`storage/offcuts.py`；对应 UI；新增 `tests/test_nesting.py`、`test_costs.py`。
 
@@ -915,7 +915,7 @@ G5：更多编辑和模板逐个通过参数矩阵与导出测试，才扩大能
 - [ ] 对照矩形排版的相同样本测利用率和耗时，不能只挑有利案例；检查成本标注按整板/按面积分摊。
 - [ ] 提交 `feat: estimate material use with constrained nesting`。
 
-### T17：后续格式、工程迁移与正式发布门槛
+### Task 17 (T17): 后续格式、工程迁移与正式发布门槛
 
 **Files:** 新增独立格式导出适配与 `tests/test_export_formats.py`；扩展 migrations、发布脚本与文档。
 

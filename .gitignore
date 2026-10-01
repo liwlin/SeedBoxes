@@ -48,3 +48,7 @@ tmp/
 full_logo.png
 web/seedboxes-logo-256.png
 _test_cython.bat
+
+# Test caches
+.pytest_cache/
+.coverage

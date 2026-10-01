@@ -27,7 +27,7 @@
 SeedBoxes 是基于 [Boxes.py](https://github.com/florianfesti/boxes)（激光切割盒子生成器）开发的桌面客户端，由 [makerseed 种子创客工坊](https://github.com/makerseed) 维护。它把上游 Web 服务器版包装为本地 Windows 桌面 app（PyWebView），并补齐了完整中文界面。
 
 ### 主要特性
-- **179 个生成器** — 完整覆盖上游 boxes 所有可视化生成器
+- **动态发现生成器** — 当前锁定 release-1.2 提交，干净环境验证发现 172 个可视化生成器；旧文档的 179 个来自原本地依赖环境，不作为当前保证
 - **完整中文化** — 加载 boxes 自带的 zh_CN.po 翻译，覆盖率 ~98%；客户端层补 4 级 fallback 翻译链处理上游漏译
 - **作品参考图** — 169 个生成器配实物照片，10 个无图的自动渲染 SVG 示意图（带角标区分）
 - **3 视图导航** — 主页画廊 → 分组浏览 → 编辑器（带面包屑返回）
@@ -130,3 +130,15 @@ SeedBoxes/
 - 上游 zh_CN 翻译贡献者：裘炯涛 \<qiujiongtao@163.com\>
 
 © makerseed 种子创客工坊
+
+## 制造升级开发分支
+
+项目名称保持 **SeedBoxes**。开发方案位于 `docs/superpowers/plans/2026-10-01-seedboxes-manufacturing-upgrade.md`，进度与验证边界位于 `docs/development/manufacturing-progress.md`。
+
+```bash
+uv sync --locked
+uv run --locked pytest -q
+uv run --locked python scripts/verify_baseline.py
+```
+
+Boxes.py 固定至 `9d93cd81b05d6ef5b0f3d4b4d6ed7eaf5bbed0dd`，不再引用旧开发机相邻目录。上方作品图片统计是旧版本记录；当前实际生成器数量与格式以基线脚本输出为准。
